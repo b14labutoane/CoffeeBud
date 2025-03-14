@@ -1,13 +1,10 @@
-import { useState } from 'react'
-import 'bootstrap/dist/css/boostrap.min.css'
-import Signup from './Signup'
+import './App.css'
+import Home from "./components/Home"
 
 function App() {
-  return (
-    <div>
-      <Signup/>
-    </div>
-  )
+  return <div className="App">
+    <Home />
+  </div>;
 }
 
 export default App

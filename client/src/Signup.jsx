@@ -7,7 +7,7 @@ function Signup(){
             <div className = "bg-white p-3 rounded w-25">
                 <h2>Register</h2>
                 <form>
-                    <div className = 
+                    
                 </form>
             </div>
         </div>
