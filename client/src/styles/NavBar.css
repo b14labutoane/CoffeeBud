@@ -1,145 +1,102 @@
-* {
-    margin: 0;
-    padding: 0;
-}
-
 .navbar {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: sticky;
-    top: 0;
-    cursor: pointer;
-}
-
-.background {
-    background: rgb(255, 255, 255);
-    background-blend-mode: darken;
-    background-size: cover;
-}
-
-.footer {
-    background-color: #000;
-}
-
-.nav-list {
-    width: 70%;
-    display: flex;
-    align-items: center;
-}
-
-.logo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.logo img {
-    width: 180px;
-    border-radius: 50px;
-}
-
-.nav-list li {
-    list-style: none;
-    padding: 26px 30px;
-}
-
-.nav-list li a {
-    text-decoration: none;
-    color: #000;
-}
-
-.nav-list li a:hover {
-    color: grey;
-}
-
-.rightnav {
-    width: 30%;
-    text-align: right;
-}
-
-#search {
-    padding: 5px;
-    font-size: 17px;
-    border: 2px solid rgb(0, 0, 0);
-    border-radius: 9px;
-}
-
-.box-main {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: black;
-    max-width: 80%;
-    margin: auto;
-    height: 80%;
-}
-
-.firsthalf {
     width: 100%;
+    height: 100px;
+    background-color: hsl(33, 27%, 26%);
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.secondhalf {
-    width: 30%;
-}
-
-.secondhalf img {
-    width: 70%;
-    border: 4px solid white;
-    border-radius: 150px;
-    display: block;
-    margin: auto;
-}
-
-.text-big {
-    font-weight: 500;
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana,
-        sans-serif;
-    font-size: 30px;
-}
-
-.text-small {
-    font-size: 18px;
-}
-
-.btn {
-    margin-left: 20px;
-    height: 33px;
-    width: 70px;
-    color: #fff;
-    background-color: #000;
-    cursor: pointer;
-}
-
-.btn-sm {
-    padding: 6px 10px;
-    vertical-align: middle;
-}
-
-.section {
-    height: 200px;
+    flex-direction: row;
+  }
+  
+  .navbar .leftSide {
+    flex: 50%;
+    height: 100%;
     display: flex;
     align-items: center;
-    background-color: rgb(250, 250, 250);
-    justify-content: space-between;
-}
-
-.section-Left {
-    flex-direction: row-reverse;
-}
-
-.center {
-    text-align: center;
-}
-
-.text-footer {
-    text-align: center;
-    padding: 30px 0;
-    font-family: "Ubuntu", sans-serif;
+    padding-left: 150px;
+  }
+  
+  .navbar .leftSide img {
+    width: 70px;
+  }
+  
+  .navbar .rightSide {
+    flex: 50%;
+    height: 100%;
     display: flex;
+    align-items: center;
     justify-content: center;
-    color: #fff;
-}
+  }
+  
+  .navbar a {
+    color: white;
+    text-decoration: none;
+    margin: 20px;
+  }
+  
+  .navbar .rightSide button {
+    background-color: transparent;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .navbar .rightSide svg {
+    font-size: 40px;
+  }
+  
+  .navbar #open {
+    padding-left: 0px;
+  }
+  .navbar #open img {
+    display: none;
+  }
+  
+  .navbar #close img {
+    display: inherit;
+  }
+  
+  .navbar #open .hiddenLinks {
+    display: inherit;
+    margin-left: 30px;
+  }
+  
+  .navbar #close .hiddenLinks {
+    display: none;
+  }
+  
+  .navbar #open a {
+    width: 70px;
+    margin: 5px;
+  }
+  @media only screen and (max-width: 900px) {
+    .navbar .rightSide a {
+      width: 70px;
+    }
+    .navbar .leftSide {
+      padding-left: 50px;
+    }
+  }
+  
+  @media only screen and (max-width: 600px) {
+    .navbar .rightSide a {
+      display: none;
+    }
+  
+    .navbar .rightSide {
+      justify-content: flex-end;
+      padding-right: 50px;
+    }
+  
+    .navbar .rightSide button {
+      display: inherit;
+    }
+  }
+  
+  @media only screen and (min-width: 600px) {
+    .navbar .rightSide button {
+      display: none;
+    }
+  
+    .hiddenLinks {
+      display: none;
+    }
+  }
