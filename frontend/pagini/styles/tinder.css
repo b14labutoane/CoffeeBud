@@ -41,7 +41,7 @@ h2 {
     display: flex;
     justify-content: space-evenly;
     align-items: center;
-    background: linear-gradient(0deg, white, #FDFBD4) no-repeat;
+    background: linear-gradient(0deg, white, #ddcb97) no-repeat;
   }
   
   #swiper {
@@ -135,12 +135,14 @@ h2 {
     display: flex;
     justify-content: space-around;
     flex-wrap: wrap;
+    box-align: center;
+    overflow: hidden;
     gap: 20px;
   }
   
   button {
     padding: 10px;
-    background-color: #007BFF;
+    background-color: #9cbb8b;
     color: white;
     border: none;
     cursor: pointer;
@@ -149,10 +151,9 @@ h2 {
   }
 
   button:hover {
-    background-color: #0056b3;
+    background-color: #584430;
   }
 
-  
   .modal {
     display: none;
     position: fixed;
@@ -166,7 +167,7 @@ h2 {
   }
 
   .modal-content {
-    background-color: white;
+    background-color: rgba(236, 223, 179, 0.798);
     padding: 20px;
     border-radius: 5px;
     width: 80%;
@@ -179,7 +180,7 @@ h2 {
   }
 
   .close-btn {
-    background-color: red;
+    background-color: rgb(89, 29, 29);
     color: white;
     padding: 10px;
     border: none;
@@ -189,5 +190,5 @@ h2 {
   }
 
   .close-btn:hover {
-    background-color: darkred;
+    background-color: rgb(90, 8, 8);
   }

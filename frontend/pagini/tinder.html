@@ -24,17 +24,20 @@
   <div class="textbox">
     <h1>Find a Bud!</h1>
     <h2>Swipe to find your perfect coffee date!</h2>
-    <img style=width:200px src="/frontend/assets/two_coffee_cups.png">
+    <img style=width:120px src="https://cdn-icons-png.freepik.com/256/2391/2391810.png?ga=GA1.1.1112539236.1742080313&semt=ais_hybrid">
   </div>
   <ion-icon id="dislike" name="person-remove-outline"></ion-icon>
-  <div id="swiper">
-    <div id="myModal" class="modal">
-      <div class="modal-content">
-        <h2>Image Information</h2>
-        <p id="modalText">Some info about the image will be shown here.</p>
-        <button class="close-btn" onclick="closeModal()">Close</button>
-      </div>
+
+  <div id="swiper"></div>
+
+  <div id="modal" class="modal">
+    <div class="modal-content">
+      <h2 id="modal-title">Image Information</h2>
+      <p id="modal-description">Description will appear here...</p>
+      <button class="close-btn" onclick="closeModal()">Close</button>
     </div>
+  </div>
+  <div id="overlay" class="overlay"></div>
   </div>
   <ion-icon id="like" name="cafe-outline"></ion-icon>
   <script src="/frontend/pagini/card.js"></script>
