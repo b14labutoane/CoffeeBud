@@ -1,30 +1,15 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>homepage</title>
+<title>CoffeeBud</title>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Delius">
-<style>
-body, html {
-  height: 100%;
-  font-family: "Delius", sans-serif;
-}
-
-.bgimg {
-  -webkit-text-stroke-width: 3px;
-  -webkit-text-stroke-color: #6F4E37;
-  background-position: center;
-  background-size: cover;
-  background-image: url("https://img.freepik.com/premium-photo/cozy-coffee-shop-interior-with-rainy-street-view_1021867-116501.jpg");
-  min-height: 75%;
-}
-
-.menu {
-  display: none;
-}
-</style>
+<link rel="stylesheet" href="style.css">
+<title>Register & Login</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script type="module" src="firebaseauth.js"></script>
 </head>
 <body>
     <header class="bgimg w3-display-container w3-grayscale-min" id="home">
@@ -39,5 +24,59 @@ body, html {
           <p>In addition to our full espresso and brew bar menu, we serve fresh made-to-order breakfast and lunch sandwiches, as well as a selection of sides and salads and other good stuff.</p>
         </div>
       </div>
+      <div class="container" id="signup" style="display:none;">
+        <h1 class="form-title">Register</h1>
+        <form method="post" action="">
+          <div id="signUpMessage" class="messageDiv" style="display:none;"></div>
+          <div class="input-group">
+             <i class="fas fa-user"></i>
+             <input type="text"  id="fName" placeholder="First Name" required>
+             <label for="fname">First Name</label>
+          </div>
+          <div class="input-group">
+              <i class="fas fa-user"></i>
+              <input type="text"  id="lName" placeholder="Last Name" required>
+              <label for="lName">Last Name</label>
+          </div>
+          <div class="input-group">
+              <i class="fas fa-envelope"></i>
+              <input type="email"  id="rEmail" placeholder="Email" required>
+              <label for="rEmail">Email</label>
+          </div>
+          <div class="input-group">
+              <i class="fas fa-lock"></i>
+              <input type="password" id="rPassword"  placeholder="Password" required>
+              <label for="rPassword">Password</label>
+          </div>
+         <button class="btn" id="submitSignUp" >Sign Up</button>
+        </form>
+        <div class="links">
+          <p>Already have an account ?</p>
+          <button id="signInButton">Sign In</button>
+        </div>
+      </div>
+      <div class="container" id="signIn">
+        <h1 class="form-title">Sign In</h1>
+        <form method="post" action="">
+          <div id="signInMessage" class="messageDiv" style="display:none;"></div>
+
+          <div class="input-group">
+              <i class="fas fa-envelope"></i>
+              <input type="email"  id="email" placeholder="Email" required>
+              <label for="email">Email</label>
+          </div>
+          <div class="input-group">
+              <i class="fas fa-lock"></i>
+            <input type="password" id="password"  placeholder="Password" required>
+              <label for="password">Password</label>
+          </div>
+         <button  class="btn"  id="submitSignIn" type="button">Sign In</button>
+        </form>
+        <div class="links">
+          <p>Don't have an account yet?</p>
+          <button class="btn" id="signUpButton" type="button">Sign Up</button>
+        </div>
+      </div>
+      <script src="script.js"></script>
 </body>
 </html>
