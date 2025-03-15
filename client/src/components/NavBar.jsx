@@ -1,8 +1,33 @@
-import React from "react";
-import "/Users/mariacimpoca/Documents/CoffeeBud/client/src/NavBar.css";
+import React, { useState } from "react";
+//import Logo from "../assets/pizzaLogo.png";
+import { Link } from "react-router-dom";
+import ReorderIcon from "@material-ui/icons/Reorder";
+import "../styles/Navbar.css";
 
-const NavBar = () => {
-    return <div> Navbar </div>
-};
+function Navbar() {
+  const [openLinks, setOpenLinks] = useState(false);
 
-export default NavBar;
+  const toggleNavbar = () => {
+    setOpenLinks(!openLinks);
+  };
+  return (
+    <div className="navbar">
+      <div className="leftSide" id={openLinks ? "open" : "close"}>
+        <img src={Logo} />
+        <div className="hiddenLinks">
+          <Link to="/"> Home </Link>
+          <Link to="/signin"> Account </Link>
+        </div>
+      </div>
+      <div className="rightSide">
+        <Link to="/"> Home </Link>
+        <Link to="/about"> Account </Link>
+        <button onClick={toggleNavbar}>
+          <ReorderIcon />
+        </button>
+      </div>
+    </div>
+  );
+}
+
+export default Navbar;

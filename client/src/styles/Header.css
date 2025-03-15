@@ -1,0 +1,12 @@
+@font-face {
+    font-family: 'CoffeeBudFont';
+    src: url('https://www.fontspace.com/coffee-soda-font-f121621');
+}
+.header{
+    font-family: "CoffeeBudFont";
+    display: felx;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #FDFBD4;
+    color: #54463A;
+}
