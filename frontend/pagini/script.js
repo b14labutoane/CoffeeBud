@@ -2,6 +2,12 @@ const swiper = document.querySelector('#swiper');
 const like = document.querySelector('#like');
 const dislike = document.querySelector('#dislike');
 
+const modal = document.querySelector("#modal");
+const modalTitle = modal.querySelector("#modal-title");
+const modalDescription = modal.querySelector("#modal-description");
+const overlay = document.querySelector("#overlay");
+const closeModalButtons = modal.querySelectorAll(".close-btn");
+
 //constante 
 const urls = [ //volatil
   "/frontend/assets/pers1.jpg",
@@ -10,6 +16,14 @@ const urls = [ //volatil
   "/frontend/assets/pers4.jpg",
   "/frontend/assets/pers5.jpg"
 ];
+
+const descriptions = [
+    "Description for Image 1",
+    "Description for Image 2",
+    "Description for Image 3",
+    "Description for Image 4",
+    "Description for Image 5"
+  ];
 
 //variabile
 let cardCount = 0;
@@ -29,6 +43,7 @@ function appendNewCard() {
   
     const card = new Card({  
       imageUrl: urls[cardCount], 
+      description: descriptions[cardCount],
       onDismiss: appendNewCard, 
       onLike: () => {
         like.style.animationPlayState = 'running';
@@ -49,4 +64,17 @@ function appendNewCard() {
     });
   }
 
+// Function to close the modal
+function closeModal() {
+  modal.style.display = 'none';
+  overlay.style.display = 'none';
+}
+
+// Event listeners for the close buttons and overlay click
+overlay.addEventListener('click', closeModal);
+closeModalButtons.forEach(button => {
+  button.addEventListener('click', closeModal);
+});
+
 appendNewCard();
+

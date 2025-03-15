@@ -30,6 +30,10 @@ class Card {
     const img = document.createElement('img');
     img.src = this.imageUrl;
     card.append(img);
+    const btn = document.createElement('button');
+    btn.textContent = 'View Info';
+    btn.onclick = () => this.openModal();
+    card.appendChild(btn);
     this.element = card;
 
     if (this.#isTouchDevice()) {
@@ -41,6 +45,19 @@ class Card {
     this.#disableSelectOnDoubleClick();
   }
 
+  openModal() {
+    modalTitle.innerText = `Image Info`;
+    modalDescription.innerText = this.description;
+    modal.style.display = 'flex'; // Show modal
+    overlay.style.display = 'block'; // Show overlay
+  }
+
+  dismiss() {
+    this.element.remove();
+    if (typeof this.onDismiss === 'function') {
+      this.onDismiss();
+    }
+  }
   #listenToTouchEvents = () => {
     this.element.addEventListener('touchstart', (e) => {
       const touch = e.changedTouches[0];
@@ -139,9 +156,9 @@ class Card {
   }
   #disableSelectOnDoubleClick = () => {
     this.element.addEventListener('dblclick', (e) => {
-      e.preventDefault(); // Prevents text/image selection
-      this.element.style.userSelect = 'none'; // Ensures no accidental text selection
-      this.element.style.pointerEvents = 'auto'; // Re-enable pointer events for dragging
+      e.preventDefault(); 
+      this.element.style.userSelect = 'none'; 
+      this.element.style.pointerEvents = 'auto';
     });
   };
 }
