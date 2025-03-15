@@ -7,6 +7,9 @@
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Delius">
 <link rel="stylesheet" href="style.css">
+<title>Register & Login</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<script type="module" src="firebaseauth.js"></script>
 </head>
 <body>
     <header class="bgimg w3-display-container w3-grayscale-min" id="home">
@@ -67,11 +70,11 @@
             <input type="password" id="password"  placeholder="Password" required>
               <label for="password">Password</label>
           </div>
-         <button  class="btn"  id="submitSignIn">Sign In</button>
+         <button  class="btn"  id="submitSignIn" type="button">Sign In</button>
         </form>
         <div class="links">
           <p>Don't have an account yet?</p>
-          <button id="signUpButton">Sign Up</button>
+          <button class="btn" id="signUpButton" type="button">Sign Up</button>
         </div>
       </div>
       <script src="script.js"></script>
