@@ -27,13 +27,6 @@ span {
 }
 
 button:focus {
-  padding: 10px;
-    background-color: #9cbb8b;
-    color: white;
-    border: none;
-    cursor: pointer;
-    margin-top: 10px;
-    border-radius: 5px;
   outline: none;
 }
 
