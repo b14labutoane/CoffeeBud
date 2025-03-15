@@ -99,7 +99,7 @@ function loginUser(event) {
         localStorage.setItem('loggedInUser', JSON.stringify(user));
 
         // Redirect after successful login
-        window.location.href = 'biapage.html';
+        window.location.href = 'editprofile.html';
     })
     .catch((error) => {
         const errorCode = error.code;
