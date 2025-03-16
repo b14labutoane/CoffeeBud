@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,300,100,500);
 @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
+
 body,
 html {
   background: url('https://img.freepik.com/premium-photo/cozy-coffee-shop-interior-with-rainy-street-view_1021867-116501.jpg') no-repeat center center fixed;
@@ -13,16 +14,16 @@ input {
 }
 
 div {
-    font-weight: 400;
-    color: #54463A;
-    margin-bottom: 15px;
+  font-weight: 400;
+  color: #54463A;
+  margin-bottom: 15px;
 }
 
 span {
-    font-weight: 600;
-    font-size: 22px;
-    color: #54463A;
-    margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 22px;
+  color: #54463A;
+  margin-bottom: 10px;
 }
 
 button:focus {
@@ -31,10 +32,6 @@ button:focus {
 
 ::-webkit-input-placeholder {
   color: rgba(255, 255, 255, 0.65);
-}
-
-::-webkit-input-placeholder .input-line:focus +::input-placeholder {
-  color: #fff;
 }
 
 .highlight {
@@ -50,12 +47,8 @@ button:focus {
 }
 
 .spacing {
-  -webkit-box-flex: 1;
-  -webkit-flex-grow: 1;
-  -ms-flex-positive: 1;
   flex-grow: 1;
   height: 120px;
-  font-weight: 300;
   text-align: center;
   margin-top: 10px;
   color: rgba(255, 255, 255, 0.65)
@@ -64,7 +57,6 @@ button:focus {
 .input-line:focus {
   outline: none;
   border-color: #fff;
-  -webkit-transition: all .2s ease;
   transition: all .2s ease;
 }
 
@@ -74,24 +66,19 @@ button:focus {
   border: 1px solid black;
   border-radius: 25px;
   color: #54463A;
-  -webkit-align-self: flex-end;
-  -ms-flex-item-align: end;
   align-self: flex-end;
-  font-size: 19px;
   font-size: 1.2rem;
   font-family: Delius;
   font-weight: 300;
   line-height: 2.5em;
   margin-top: auto;
   margin-bottom: 25px;
-  -webkit-transition: all .2s ease;
   transition: all .2s ease;
 }
 
 .ghost-round:hover {
   background: rgba(255, 255, 255, 0.15);
   color: #54463A;
-  -webkit-transition: all .2s ease;
   transition: all .2s ease;
 }
 
@@ -102,12 +89,8 @@ button:focus {
   color: #54463A;
   font-family: Delius;
   font-weight: 300;
-  letter-spacing: 0px;
-  letter-spacing: 0.02rem;
-  font-size: 19px;
   font-size: 1.2rem;
   border-bottom: 1px solid rgba(255, 255, 255, 0.65);
-  -webkit-transition: all .2s ease;
   transition: all .2s ease;
 }
 
@@ -116,24 +99,26 @@ button:focus {
 }
 
 .input-fields {
-  margin-top: 25px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+  color: #fff; /* Text color to contrast against green */
+  font-size: 1rem; /* Reduced font size */
+}
+
+.input-fields div {
+  font-size: 1rem; /* Reduced font size for better fit */
+  margin-bottom: 10px;
+  text-align: center; /* Ensures text is centered within each div */
 }
 
 .container {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-  -ms-flex-align: center;
   align-items: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-  -ms-flex-pack: center;
   justify-content: center;
   background: #eee;
-  /*background: url('https://img.freepik.com/premium-photo/hand-drawn-abstract-background-design_481527-40688.jpg') no-repeat center center fixed;*/
   background: url('https://cdn-icons-png.flaticon.com/128/4866/4866756.png') no-repeat center fixed;
   height: 100%;
 }
@@ -141,12 +126,7 @@ button:focus {
 .content {
   padding-left: 25px;
   padding-right: 25px;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-flow: column;
-  -ms-flex-flow: column;
   flex-flow: column;
   z-index: 5;
 }
@@ -155,9 +135,7 @@ button:focus {
   font-weight: 200;
   margin-top: 75px;
   text-align: center;
-  font-size: 40px;
   font-size: 2.5rem;
-  letter-spacing: 0px;
   letter-spacing: 0.05rem;
 }
 
@@ -165,7 +143,6 @@ button:focus {
   text-align: center;
   line-height: 1em;
   font-weight: 100;
-  letter-spacing: 0px;
   letter-spacing: 0.02rem;
 }
 
@@ -180,12 +157,7 @@ button:focus {
   color: #fff;
   font-family: Delius;
   position: relative;
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
   display: flex;
-  -webkit-flex-flow: column;
-  -ms-flex-flow: column;
   flex-flow: column;
   box-shadow: 0px 15px 50px 10px rgba(0, 0, 0, 0.2);
   box-sizing: border-box;
@@ -197,16 +169,18 @@ button:focus {
 }
 
 .overlay {
-  background: url("https://img.freepik.com/premium-photo/cozy-coffee-shop-interior-with-rainy-street-view_1021867-116501.jpg") no-repeat center center;
-  background-size:cover;
-  background: -webkit-linear-gradient(#84B067,#FDFBD4);
-  background: linear-gradien(#84B067,#FDFBD4);
-  opacity: 1;
-  filter: alpha(opacity=85);
-  height: 560px;
+  background: linear-gradient(#84B067, #FDFBD4); /* Green gradient */
+  height: 600px; /* Increased height to make the green component bigger */
   position: absolute;
   width: 360px;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 20px;
+  box-sizing: border-box;
 }
 
 .bold-line {
@@ -218,9 +192,8 @@ button:focus {
   width: 100%;
   height: 360px;
   z-index: 1;
-  opacity:0.1;
+  opacity: 0.1;
   background: url('https://pexels.imgix.net/photos/27718/pexels-photo-27718.jpg?fit=crop&w=1280&h=823') left no-repeat;
-  background-size:cover;
 }
 
 @media (max-width: 500px) {
@@ -232,4 +205,37 @@ button:focus {
     width: 100%;
     height: 100%;
   }
+}
+
+#imagePreview {
+  margin-top: 20px;
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ccc;
+  margin-bottom: 20px;
+}
+
+#imageUploader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.file-upload-container {
+  margin-top: 20px;
+}
+
+input[type="file"] {
+  margin-bottom: 10px;
+}
+
+.upload-section {
+  display: block;
+}
+
+.profile-section {
+  display: block;
+  text-align: center;
 }
