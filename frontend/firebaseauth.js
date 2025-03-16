@@ -60,7 +60,7 @@ function registerUser(event) {
             setDoc(doc(db, "users", user.uid), userData)
                 .then(() => {
                     console.log("User added to Firestore");
-                    window.location.href = 'bia.html';
+                    window.location.href = 'homepage.html';
                 })
                 .catch((error) => {
                     console.error("Error writing document:", error);
