@@ -17,6 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const saveProfileButton = document.getElementById("saveProfileButton");
 
 // Function to fetch user data
 async function fetchUserData(userId) {
@@ -43,7 +44,7 @@ onAuthStateChanged(auth, (user) => {
         fetchUserData(user.uid); // Fetch user data from Firestore
     } else {
         console.log("No user is signed in. Redirecting...");
-        window.location.href = "bia.html"; // Redirect to login page
+        window.location.href = "homepage.html"; // Redirect to login page
     }
 });
 

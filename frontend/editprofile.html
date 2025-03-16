@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,38 +10,40 @@
     <script type="module" src="firebaseauth.js"></script>
     <script type="module" src="./homepage.js"></script>
 </head>
+
 <body>
     <div class="container">
         <div class="window">
             <div class="overlay"></div>
             <div class="content">
                 <!-- Profile Section -->
-                <div class="profile-section" id="profileSection">
+                <div id="profileSection" class="profile-section">
                     <h2>Your CoffeeBud Profile</h2>
                     <img id="imagePreview" src="" alt="Profile Picture">
+                    <div class="input-fields">
+                        <div>First Name: <span id="loggedUserFName"></span></div>
+                        <div>Last Name: <span id="loggedUserLName"></span></div>
+                        <div>Email: <span id="loggedUserEmail"></span></div>
+                        <div>Bio: <span id="loggedUserBio"></span></div>
+                    </div>
+                    <button id="editProfileButton" class="ghost-round full-width">Edit Profile</button>
                 </div>
 
-                <!-- User Info Section -->
-                <div class="input-fields">
-                    <div>First Name: <span id="loggedUserFName"></span></div>
-                    <div>Last Name: <span id="loggedUserLName"></span></div>
-                    <div>Email: <span id="loggedUserEmail"></span></div>
+                <!-- Edit Profile Section -->
+                <div id="editProfileSection" class="edit-profile-section" style="display: none;">
+                    <h2>Edit Profile</h2>
+                    <div class="file-upload-container">
+                        <input type="file" id="fileInput" accept="image/*">
+                        <button id="uploadImage" class="ghost-round full-width">Upload New Image</button>
+                    </div>
+                    <div>
+                        <textarea id="bioInput" placeholder="Enter your new bio..."></textarea>
+                    </div>
+                    <button id="saveProfileButton" class="ghost-round full-width">Save Changes</button>
                 </div>
-
-                <!-- Edit Button -->
-                <div><button class="ghost-round full-width" id="editProfileButton">Edit Profile</button></div>
 
                 <!-- Logout Button -->
                 <button id="logout" class="ghost-round full-width">Logout</button>
-
-                <!-- Image Upload Section -->
-                <div id="imageUploader" class="upload-section" style="display: none;">
-                    <h2 class="ghost-round full-width">Upload Profile Picture</h2>
-                    <div class="file-upload-container">
-                        <input type="file" id="fileInput" accept="image/*">
-                        <button id="uploadImage" class="ghost-round full-width">Upload Image</button>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -66,47 +69,28 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
 
-        // On Authentication State Changed
-        onAuthStateChanged(auth, async (user) => {
-            const imageUploader = document.getElementById('imageUploader');
-            const profileSection = document.getElementById('profileSection');
-            const uploadButton = document.getElementById('uploadImage');
-            const imagePreview = document.getElementById("imagePreview");
+        // DOM Elements
+        const saveProfileButton = document.getElementById("saveProfileButton");
+        const profileSection = document.getElementById('profileSection');
+        const editProfileSection = document.getElementById('editProfileSection');
+        const uploadButton = document.getElementById('uploadImage');
+        const imagePreview = document.getElementById("imagePreview");
+        const bioInput = document.getElementById("bioInput");
+        const loggedUserBio = document.getElementById("loggedUserBio");
+        const logoutButton = document.getElementById('logout');
 
-            if (user) {
-                // User is signed in
-                const userData = await getUserData(user.uid);
-                document.getElementById('loggedUserFName').textContent = userData.firstName;
-                document.getElementById('loggedUserLName').textContent = userData.lastName;
-                document.getElementById('loggedUserEmail').textContent = user.email;
-
-                // If the user has a profile picture, show the profile section
-                if (userData.profilePicURL) {
-                    imagePreview.src = userData.profilePicURL;
-                    imageUploader.style.display = 'none'; // Hide upload section
-                    profileSection.style.display = 'block'; // Show profile section
-                } else {
-                    // If no profile picture, show the upload section
-                    imageUploader.style.display = 'block'; // Show upload section
-                    profileSection.style.display = 'none'; // Hide profile section
-                }
+        // Handle Edit Profile Button Click
+        const editProfileButton = document.getElementById("editProfileButton");
+        editProfileButton.addEventListener("click", () => {
+            // Toggle between profile and edit profile sections
+            if (profileSection.style.display === "block") {
+                profileSection.style.display = "none";
+                editProfileSection.style.display = "block";
             } else {
-                // User is not signed in
-                imageUploader.style.display = 'block'; // Show upload section
-                profileSection.style.display = 'none'; // Hide profile section
+                profileSection.style.display = "block";
+                editProfileSection.style.display = "none";
             }
         });
-
-        // Fetch user data from Firestore
-        async function getUserData(userId) {
-            const userRef = doc(db, 'users', userId);
-            const userDoc = await getDoc(userRef);
-            if (userDoc.exists()) {
-                return userDoc.data();
-            } else {
-                return {};
-            }
-        }
 
         // Handle Image Upload
         async function uploadImage() {
@@ -118,7 +102,6 @@
                 await uploadBytes(storageRef, file);
 
                 const imageURL = await getDownloadURL(storageRef);
-                const imagePreview = document.getElementById("imagePreview");
                 imagePreview.src = imageURL;
 
                 const user = auth.currentUser;
@@ -127,37 +110,79 @@
                         profilePicURL: imageURL
                     });
                 }
-
-                // Switch back to profile section after upload
-                profileSection.style.display = 'block';
-                imageUploader.style.display = 'none';
             }
         }
 
-        const uploadButton = document.getElementById("uploadImage");
         uploadButton.addEventListener('click', uploadImage);
 
-        // Handle Edit Profile Button Click
-        const editProfileButton = document.getElementById("editProfileButton");
-        editProfileButton.addEventListener("click", () => {
-            const imageUploader = document.getElementById("imageUploader");
-            const profileSection = document.getElementById("profileSection");
+        // Save Bio Changes and Redirect
+        saveProfileButton.addEventListener("click", async () => {
+            const bioText = bioInput.value.trim();
+            const user = auth.currentUser;
 
-            // Toggle between profile and image upload sections
-            if (profileSection.style.display === "block") {
-                profileSection.style.display = "none"; // Hide profile section
-                imageUploader.style.display = "block"; // Show image upload section
+            if (user && bioText) {
+                // Update the bio in Firestore
+                await updateDoc(doc(db, 'users', user.uid), {
+                    bio: bioText
+                });
+
+                // Update the bio text in the UI
+                loggedUserBio.textContent = bioText;
+
+                // Alert user that the profile is updated
+                alert("Profile updated successfully!");
+
+                // Redirect to another page (profile page or home page)
+                window.location.href = "editprofile.html"; // Change this to your desired page
             } else {
-                profileSection.style.display = "block"; // Show profile section
-                imageUploader.style.display = "none"; // Hide image upload section
+                alert("Bio cannot be empty!");
+            }
+        });
+
+        // Fetch user data from Firestore
+        async function getUserData(userId) {
+            try {
+                const userRef = doc(db, 'users', userId);
+                const userDoc = await getDoc(userRef);
+                if (userDoc.exists()) {
+                    return userDoc.data();
+                } else {
+                    console.log("No user data found.");
+                    return {};  // Return empty object if no data
+                }
+            } catch (error) {
+                console.log("Error fetching user data:", error);
+                return {};  // Return empty object if error occurs
+            }
+        }
+
+        // On Authentication State Changed
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // User is signed in
+                const userData = await getUserData(user.uid);
+                document.getElementById('loggedUserFName').textContent = userData.firstName;
+                document.getElementById('loggedUserLName').textContent = userData.lastName;
+                document.getElementById('loggedUserEmail').textContent = user.email;
+                loggedUserBio.textContent = userData.bio || "No bio available";
+
+                // If the user has a profile picture, show it
+                if (userData.profilePicURL) {
+                    imagePreview.src = userData.profilePicURL;
+                }
+            } else {
+                // User is not signed in
+                profileSection.style.display = 'none';
+                editProfileSection.style.display = 'none';
             }
         });
 
         // Logout functionality
-        const logoutButton = document.getElementById('logout');
         logoutButton.addEventListener('click', async () => {
             await signOut(auth);
         });
+
     </script>
 </body>
+
 </html>
