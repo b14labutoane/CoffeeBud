@@ -31,7 +31,7 @@ button:focus {
 }
 
 ::-webkit-input-placeholder {
-  color: rgba(255, 255, 255, 0.65);
+  color: #54463A;
 }
 
 .highlight {
@@ -67,13 +67,14 @@ button:focus {
   border-radius: 25px;
   color: #54463A;
   align-self: flex-end;
-  font-size: 1.2rem;
+  font-size: 1rem;
   font-family: Delius;
   font-weight: 300;
   line-height: 2.5em;
   margin-top: auto;
   margin-bottom: 25px;
   transition: all .2s ease;
+  padding:8px 15px;
 }
 
 .ghost-round:hover {
@@ -231,7 +232,6 @@ input[type="file"] {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  margin-top: 20px;
 }
 
 .left-column,
@@ -289,4 +289,32 @@ label[for="fileInput"] {
   margin-bottom: 25px;
   box-sizing: border-box;   
   transition: all .2s ease;
+}
+
+textarea {
+  width: 90%;
+  min-height: 80px;
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 2px solid #54463A;
+  background: rgba(255, 255, 255, 0.8);
+  color: #54463A;
+  resize: none;
+  outline: none;
+  transition: all 0.3s ease-in-out;
+  font-family: Delius, sans-serif;
+}
+
+textarea:focus {
+  border-color: #84B067;
+  background: white;
+  box-shadow: 0 0 8px rgba(132, 176, 103, 0.5);
+}
+
+.textarea-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
 }
