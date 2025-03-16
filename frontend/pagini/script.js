@@ -1,3 +1,19 @@
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAu2lp1BsnqTdc3FK9gATIMWevtkttGK68",
+    authDomain: "coffeebud-d0960.firebaseapp.com",
+    projectId: "coffeebud-d0960",
+    storageBucket: "coffeebud-d0960.firebasestorage.app",
+    messagingSenderId: "1061672167679",
+    appId: "1:1061672167679:web:f39ecd079d344f6f0484ca",
+    measurementId: "G-G7LZYRSW5G"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 const swiper = document.querySelector('#swiper');
 const like = document.querySelector('#like');
 const dislike = document.querySelector('#dislike');
@@ -8,73 +24,75 @@ const modalDescription = modal.querySelector("#modal-description");
 const overlay = document.querySelector("#overlay");
 const closeModalButtons = modal.querySelectorAll(".close-btn");
 
-//constante 
-const urls = [ //volatil
-  "/frontend/assets/pers1.jpg",
-  "/frontend/assets/pers2.jpg",
-  "/frontend/assets/pers3.jpg",
-  "/frontend/assets/pers4.jpg",
-  "/frontend/assets/pers5.jpg"
-];
-
-const descriptions = [
-    "Description for Image 1",
-    "Description for Image 2",
-    "Description for Image 3",
-    "Description for Image 4",
-    "Description for Image 5"
-  ];
-
-//variabile
 let cardCount = 0;
+let usersData = []; // Array to store user data from Firestore
 
-//functii
+async function fetchUsersData() {
+    try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        usersData = querySnapshot.docs.map(doc => doc.data());
+        populateCards();
+    } catch (error) {
+        console.error("Error fetching users:", error);
+    }
+}
+
+function populateCards() {
+    if (usersData.length === 0) {
+        const message = document.createElement('h2');
+        message.innerText = "No users found!";
+        message.style.color = "black";
+        message.style.marginTop = "20px";
+        message.style.fontFamily = 'Delius';
+        swiper.appendChild(message);
+        return;
+    }
+    appendNewCard();
+}
+
 function appendNewCard() {
-    if (cardCount >= urls.length) { 
+    if (cardCount >= usersData.length) {
         const message = document.createElement('h2');
         message.innerText = "Mergi la plimbare!";
         message.style.color = "black";
         message.style.marginTop = "20px";
         message.style.fontFamily = 'Delius';
-
         swiper.appendChild(message);
-      return;
+        return;
     }
-  
-    const card = new Card({  
-      imageUrl: urls[cardCount], 
-      description: descriptions[cardCount],
-      onDismiss: appendNewCard, 
-      onLike: () => {
-        like.style.animationPlayState = 'running';
-        like.classList.toggle('trigger');
-      },
-      onDislike: () => {
-        dislike.style.animationPlayState = 'running';
-        dislike.classList.toggle('trigger');
-      }
+
+    const userData = usersData[cardCount];
+    const card = new Card({
+        imageUrl: userData.profilePicURL,
+        description: `Name: ${userData.firstName} ${userData.lastName}, Bio: ${userData.bio}`, // Customize description as needed
+        onDismiss: appendNewCard,
+        onLike: () => {
+            like.style.animationPlayState = 'running';
+            like.classList.toggle('trigger');
+        },
+        onDislike: () => {
+            dislike.style.animationPlayState = 'running';
+            dislike.classList.toggle('trigger');
+        }
     });
-  
+
     swiper.append(card.element);
     cardCount++;
-  
+
     const cards = swiper.querySelectorAll('.card:not(.dismissing)');
     cards.forEach((card, index) => {
-      card.style.setProperty('--cardCount', index);
+        card.style.setProperty('--cardCount', index);
     });
-  }
-
-// Function to close the modal
-function closeModal() {
-  modal.style.display = 'none';
-  overlay.style.display = 'none';
 }
 
-// Event listeners for the close buttons and overlay click
+function closeModal() {
+    modal.style.display = 'none';
+    overlay.style.display = 'none';
+}
+
 overlay.addEventListener('click', closeModal);
 closeModalButtons.forEach(button => {
-  button.addEventListener('click', closeModal);
+    button.addEventListener('click', closeModal);
 });
 
-appendNewCard();
-
+fetchUsersData(); // Start fetching user data
