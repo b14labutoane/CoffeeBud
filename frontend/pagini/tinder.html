@@ -2,58 +2,58 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Find a Bud</title>
-  <link rel="stylesheet" href="styles/tinder.css">
-  <link rel="stylesheet" href="/frontend/pagini/styles/navbar.css">
-  <link rel="icon" href=
-"https://cdn-icons-png.flaticon.com/128/3219/3219333.png"
-        type="image/x-icon" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Karma">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find a Bud</title>
+    <link rel="stylesheet" href="styles/tinder.css">
+    <link rel="stylesheet" href="/frontend/pagini/styles/navbar.css">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/3219/3219333.png" type="image/x-icon" />
 </head>
 
 <style>
-  body{
-    margin-top: 60px;
-    font-family:'Delius';
-  }
-  .bar-block .bar-item {
-    padding: 20px;
-  }
+    body {
+        margin-top: 60px;
+        font-family: 'Delius';
+    }
+
+    .bar-block .bar-item {
+        padding: 20px;
+    }
 </style>
 
 <body>
-  <nav>
-    <div class="topnav">
-      <a  href="/frontend/editprofile.html">Your Profile</a>
-      <a class="active" href="/frontend/pagini/tinder.html">Find your bud!</a>
-      <a href="/frontend/map.html">Coffee in Timisoara</a>
+    <nav>
+        <div class="topnav">
+            <a href="/frontend/editprofile.html">Your Profile</a>
+            <a class="active" href="/frontend/pagini/tinder.html">Find your bud!</a>
+            <a href="/frontend/map.html">Coffee in Timisoara</a>
+        </div>
+    </nav>
+    <div class="textbox" style="text-align: center;">
+        <h1>Find a Bud!</h1>
+        <h2>Swipe to find your perfect coffee date!</h2>
+        <img style=width:120px src="https://cdn-icons-png.freepik.com/256/2391/2391810.png?ga=GA1.1.1112539236.1742080313&semt=ais_hybrid">
     </div>
-</nav>
-  <div class="textbox" style="text-align: center;">
-    <h1>Find a Bud!</h1>
-    <h2>Swipe to find your perfect coffee date!</h2>
-    <img style=width:120px src="https://cdn-icons-png.freepik.com/256/2391/2391810.png?ga=GA1.1.1112539236.1742080313&semt=ais_hybrid">
-  </div>
-  <ion-icon id="dislike" name="person-remove-outline"></ion-icon>
+    <ion-icon id="dislike" name="person-remove-outline"></ion-icon>
 
-  <div id="swiper"></div>
+    <div id="swiper"></div>
 
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <h2 id="modal-title">Image Information</h2>
-      <p id="modal-description">Description will appear here...</p>
-      <button class="close-btn" onclick="closeModal()">Close</button>
+    <div id="modal" class="modal">
+        <div class="modal-content">
+            <h2 id="modal-title">Image Information</h2>
+            <p id="modal-description">Description will appear here...</p>
+            <button class="close-btn" onclick="closeModal()">Close</button>
+        </div>
     </div>
-  </div>
-  <div id="overlay" class="overlay"></div>
-  </div>
-  <ion-icon id="like" name="cafe-outline"></ion-icon>
-  <script src="/frontend/pagini/card.js"></script>
-  <script type = "module" src="/frontend/pagini/script.js"></script>
-  <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
-  <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <div id="overlay" class="overlay"></div>
+    </div>
+    <ion-icon id="like" name="cafe-outline"></ion-icon>
+    <script src="/frontend/pagini/card.js"></script>
+    <script type="module" src="/frontend/pagini/script.js"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
 </body>
+
 </html>

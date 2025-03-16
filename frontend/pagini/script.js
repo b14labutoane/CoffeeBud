@@ -25,7 +25,7 @@ const overlay = document.querySelector("#overlay");
 const closeModalButtons = modal.querySelectorAll(".close-btn");
 
 let cardCount = 0;
-let usersData = []; // Array to store user data from Firestore
+let usersData = [];
 
 async function fetchUsersData() {
     try {
@@ -64,7 +64,7 @@ function appendNewCard() {
     const userData = usersData[cardCount];
     const card = new Card({
         imageUrl: userData.profilePicURL,
-        description: `Name: ${userData.firstName} ${userData.lastName}, Bio: ${userData.bio}`, // Customize description as needed
+        description: `Name: ${userData.firstName} ${userData.lastName}, Bio: ${userData.bio}`,
         onDismiss: appendNewCard,
         onLike: () => {
             like.style.animationPlayState = 'running';
@@ -95,4 +95,4 @@ closeModalButtons.forEach(button => {
     button.addEventListener('click', closeModal);
 });
 
-fetchUsersData(); // Start fetching user data
+fetchUsersData();

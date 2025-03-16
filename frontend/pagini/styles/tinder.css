@@ -1,218 +1,233 @@
 @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
 
 * {
-  font-family: "Delius";
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+    font-family: "Delius";
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
 }
 
 body {
-  justify-content: center;
-  align-items: center;
+    justify-content: center;
+    align-items: center;
 }
 
 .textbox {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-  max-width: 100px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    max-width: 100px;
 }
 
 h1 {
-  margin: 5px 0;
-  font-size: 2rem;
+    margin: 5px 0;
+    font-size: 2rem;
 }
 
 h2 {
-  margin-bottom: 20px;
-  font-size: 1.5rem;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
 }
 
 html,
 body {
-  width: 100vw;
-  height: 100vh;
-  overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
 }
 
 body {
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  background: linear-gradient(0deg, white, #ddcb97) no-repeat;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background: linear-gradient(0deg, white, #ddcb97) no-repeat;
 }
 
 #swiper {
-  height: 70vh;
-  aspect-ratio: 2 / 3;
-  perspective: 1000px;
-  perspective-origin: center 50%;
-  transform-style: preserve-3d;
-  position: relative;
+    height: 70vh;
+    aspect-ratio: 2 / 3;
+    perspective: 1000px;
+    perspective-origin: center 50%;
+    transform-style: preserve-3d;
+    position: relative;
 }
 
 .card {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  border-radius: 20px;
-  overflow: hidden;
-  transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
-  filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.5s;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 20px;
+    overflow: hidden;
+    transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
+    filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.5s;
+    display: flex;
+    flex-direction: column; /* Add flex column for vertical stacking */
+    align-items: center; /* Center items horizontally */
 }
-
-/* Removed the img styles here, as the card image is now a background-image in a div */
 
 #like,
 #dislike {
-  font-size: 16vh;
-  border-radius: 50%;
-  padding: 12px;
-  position: relative;
-  z-index: 1;
-  animation-name: animation1;
-  animation-duration: 1s;
-  animation-timing-function: ease-in-out;
-  animation-fill-mode: both;
-  animation-play-state: paused;
+    font-size: 16vh;
+    border-radius: 50%;
+    padding: 12px;
+    position: relative;
+    z-index: 1;
+    animation-name: animation1;
+    animation-duration: 1s;
+    animation-timing-function: ease-in-out;
+    animation-fill-mode: both;
+    animation-play-state: paused;
 }
 
 #like.trigger,
 #dislike.trigger {
-  animation-name: animation2;
+    animation-name: animation2;
 }
 
 #like {
-  color: black;
-  background-color: rgba(97, 75, 55, 0.5);
-  border: 5px solid black;
+    color: black;
+    background-color: rgba(97, 75, 55, 0.5);
+    border: 5px solid black;
 }
 
 #dislike {
-  color: black;
-  background-color: rgba(97, 75, 55, 0.5);
-  border: 5px solid black;
+    color: black;
+    background-color: rgba(97, 75, 55, 0.5);
+    border: 5px solid black;
 }
 
 @keyframes animation1 {
-  0%,
-  100% {
-    opacity: 0.5;
-  }
-  50% {
-    opacity: 1;
-  }
+    0%,
+    100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 @keyframes animation2 {
-  0%,
-  100% {
-    opacity: 0.2;
-  }
-  50% {
-    opacity: 1;
-  }
+    0%,
+    100% {
+        opacity: 0.2;
+    }
+    50% {
+        opacity: 1;
+    }
 }
 
 #imageContainer {
-  display: flex;
-  justify-content: space-around;
-  flex-wrap: wrap;
-  box-align: center;
-  overflow: hidden;
-  gap: 20px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    box-align: center;
+    overflow: hidden;
+    gap: 20px;
 }
 
 button {
-  padding: 10px;
-  background-color: #9cbb8b;
-  color: white;
-  border: none;
-  cursor: pointer;
-  margin-top: 10px;
-  border-radius: 5px;
+    padding: 10px;
+    background-color: #9cbb8b;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
 }
 
 button:hover {
-  background-color: #584430;
+    background-color: #584430;
 }
 
 .modal {
-  display: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content {
+    background-color: rgba(236, 223, 179, 0.798);
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 500px;
+    text-align: center;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+}
+
+.close-btn {
+    background-color: rgb(89, 29, 29);
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.close-btn:hover {
+    background-color: rgb(90, 8, 8);
+}
+
+#swiper {
+    height: 70vh;
+    aspect-ratio: 2 / 3;
+    perspective: 1000px;
+    perspective-origin: center 50%;
+    transform-style: preserve-3d;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    border-radius: 20px;
+    overflow: hidden;
+    transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
+    filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
+    cursor: pointer;
+    user-select: none;
+    transition: transform 0.5s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.card__image {
+  width: 200px; /* Sau orice lățime dorită */
+  height: 200px; /* Sau orice înălțime dorită */
+  overflow: hidden;
+  margin: 20px auto;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.modal-content {
-  background-color: rgba(236, 223, 179, 0.798);
-  padding: 20px;
-  border-radius: 5px;
-  width: 80%;
-  max-width: 500px;
-  text-align: center;
-}
-
-.modal-content h2 {
-  margin-bottom: 20px;
-}
-
-.close-btn {
-  background-color: rgb(89, 29, 29);
-  color: white;
-  padding: 10px;
-  border: none;
-  cursor: pointer;
-  border-radius: 5px;
-  margin-top: 10px;
-}
-
-.close-btn:hover {
-  background-color: rgb(90, 8, 8);
-}
-
-#swiper {
-  height: 50vh; /* Reduced height */
-  aspect-ratio: 2 / 3;
-  perspective: 1000px;
-  perspective-origin: center 50%;
-  transform-style: preserve-3d;
-  position: relative;
-}
-
-.card {
-  width: 80%; /* Reduced width */
-  height: 80%; /* Reduced height */
-  position: absolute;
-  border-radius: 20px;
-  overflow: hidden;
-  transform: translateZ(calc(-30px * var(--i))) translateY(calc(-20px * var(--i))) rotate(calc(-4deg * var(--i)));
-  filter: drop-shadow(2px 2px 20px rgba(0, 0, 0, 0.5));
-  cursor: pointer;
-  user-select: none;
-  transition: transform 0.5s;
-  /* Added margin to center the card */
-  margin: auto;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-
-.card__image {
+.card__image img {
   width: 100%;
-  height: 300px; /* Reduced image height */
-  background-size: cover;
-  background-position: center;
+  height: 100%;
+  object-fit: cover; /* Umple containerul, decupând dacă este necesar */
+  object-position: center; /* Centrează conținutul imaginii */
+}
+
+.card button{
+    width: 100%;
 }
