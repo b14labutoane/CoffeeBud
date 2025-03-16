@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
 /* Add a black background color to the top navigation */
 .topnav {
-    background-color: #54463A;
+    background-color: #6b5948;
     overflow: hidden;
   }
   
@@ -21,9 +21,10 @@
     background-color: #ddd;
     color: black;
   }
+ 
   
   /* Add a color to the active/current link */
   .topnav a.active {
-    background-color: #84B067;
+    background-color: #9bbd84;
     color: white;
   }
