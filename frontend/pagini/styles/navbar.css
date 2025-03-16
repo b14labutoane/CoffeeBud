@@ -1,8 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
 /* Add a black background color to the top navigation */
 .topnav {
-    background-color: #54463A;
+    background-color: #6b5948;
     overflow: hidden;
+    position: fixed; /* Fix the navbar at the top */
+    top: 0; /* Stick it to the very top of the page */
+    left: 0;
+    width: 100%; /* Make it span the full width */
+    overflow: hidden;
+    padding: 10px 0; /* Add some padding for spacing */
+    text-align: center;
+    z-index: 1000;
   }
   
   /* Style the links inside the navigation bar */
@@ -21,9 +29,10 @@
     background-color: #ddd;
     color: black;
   }
+ 
   
   /* Add a color to the active/current link */
   .topnav a.active {
-    background-color: #84B067;
+    background-color: #9bbd84;
     color: white;
   }
