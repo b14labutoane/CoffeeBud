@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/3219/3219333.png" type="image/x-icon" />
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/frontend/pagini/styles/navbar.css">
     <title>Your conversations</title>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+        import { getFirestore, collection, getDocs, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
         import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
 
         // Firebase Configuration
@@ -32,20 +33,29 @@
 
         // Function to fetch and display contacts
         async function fetchAndDisplayContacts() {
-            const contactsList = [];
-            const querySnapshot = await getDocs(collection(db, "users"));
-            querySnapshot.forEach((doc) => {
-                const contact = doc.data();
-                contactsList.push({
-                    id: contact.email,
-                    name: contact.firstName,
-                    photoUrl: contact.profilePicURL
-                });
-            });
+    const loggedInUser = auth.currentUser;
+    if (!loggedInUser) {
+        console.error("No user is logged in.");
+        return;
+    }
 
-            displayContacts(contactsList);
-            initializeTalkJS(contactsList);
+    const contactsList = [];
+    const querySnapshot = await getDocs(collection(db, "users"));
+    querySnapshot.forEach((doc) => {
+        const contact = doc.data();
+        // Exclude the logged-in user from the contacts list
+        if (contact.email !== loggedInUser.email) {
+            contactsList.push({
+                id: contact.email,
+                name: contact.firstName,
+                photoUrl: contact.profilePicURL // Fetch profile picture URL from Firestore
+            });
         }
+    });
+
+    displayContacts(contactsList);
+    initializeTalkJS(contactsList);
+}
 
         function displayContacts(contactsList) {
             const contactsWrapper = document.getElementById('contacts-list');
@@ -57,7 +67,7 @@
                 contactContainerDiv.dataset.id = contact.id;
 
                 const contactPhoto = document.createElement('img');
-                contactPhoto.src = contact.photoUrl;
+                contactPhoto.src = contact.photoUrl || 'default-profile.png'; // Use a default image if no URL is provided
                 contactPhoto.alt = contact.name;
 
                 const usernameDiv = document.createElement('div');
@@ -70,63 +80,84 @@
             });
         }
 
-        function initializeTalkJS(contactsList) {
-    Talk.ready.then(() => {
-        let me = new Talk.User({
-            id: '0',
-            name: 'Josh',
-            photoUrl: 'images/josh.webp'
-        });
+        async function initializeTalkJS(contactsList) {
+            Talk.ready.then(async () => {
+                // Fetch the logged-in user's data
+                const loggedInUser = auth.currentUser;
+                if (!loggedInUser) {
+                    console.error("No user is logged in.");
+                    return;
+                }
 
-        window.talkSession = new Talk.Session({
-            appId: 'tQWG4Gnl',
-            me: me
-        });
+                // Fetch additional user data from Firestore (if needed)
+                const userDoc = await getDoc(doc(db, "users", loggedInUser.uid));
+                const userData = userDoc.exists() ? userDoc.data() : null;
 
-        const chatbox = talkSession.createChatbox();
-        chatbox.mount(document.getElementById('talkjs-container'));
-
-        const contactsDivs = document.getElementsByClassName('contact-container');
-
-        // Automatically select the first contact and open the chat
-        if (contactsList.length > 0) {
-            const firstContact = contactsList[0];
-            let firstTalkUser = new Talk.User({
-                id: firstContact.id,
-                name: firstContact.name,
-                photoUrl: firstContact.photoUrl
-            });
-
-            let firstConversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(me, firstTalkUser));
-            firstConversation.setParticipant(me);
-            firstConversation.setParticipant(firstTalkUser);
-
-            chatbox.select(firstConversation);
-
-            firstConversation.sendMessage("Hello!"); 
-        }
-
-        // Add click event listeners for other contacts
-        Array.from(contactsDivs).forEach((contactDiv, index) => {
-            contactDiv.addEventListener('click', () => {
-                const contactData = contactsList[index];
-
-                let talkUser = new Talk.User({
-                    id: contactData.id,
-                    name: contactData.name,
-                    photoUrl: contactData.photoUrl
+                // Create the Talk.User object for the logged-in user
+                let me = new Talk.User({
+                    id: loggedInUser.uid, // Use the Firebase UID as the TalkJS user ID
+                    name: userData?.firstName || loggedInUser.displayName || 'User', // Use Firestore data, then Firebase Auth data, or a default
+                    photoUrl: userData?.profilePicURL || loggedInUser.photoURL || 'default-profile.png' // Use Firestore data, then Firebase Auth data, or a default
                 });
 
-                let conversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(me, talkUser));
-                conversation.setParticipant(me);
-                conversation.setParticipant(talkUser);
+                // Initialize the TalkJS session
+                window.talkSession = new Talk.Session({
+                    appId: 'tBq68rja', // Replace with your TalkJS app ID
+                    me: me
+                });
 
-                chatbox.select(conversation);
+                const chatbox = talkSession.createChatbox();
+                chatbox.mount(document.getElementById('talkjs-container'));
+
+                const contactsDivs = document.getElementsByClassName('contact-container');
+
+                // Automatically select the first contact and open the chat
+                if (contactsList.length > 0) {
+                    const firstContact = contactsList[0];
+                    let firstTalkUser = new Talk.User({
+                        id: firstContact.id,
+                        name: firstContact.name,
+                        photoUrl: firstContact.photoUrl || 'default-profile.png' // Use the profile picture URL or a default
+                    });
+
+                    let firstConversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(me, firstTalkUser));
+                    firstConversation.setParticipant(me);
+                    firstConversation.setParticipant(firstTalkUser);
+
+                    chatbox.select(firstConversation);
+                }
+
+                // Add click event listeners for other contacts
+                Array.from(contactsDivs).forEach((contactDiv, index) => {
+                    contactDiv.addEventListener('click', () => {
+                        const contactData = contactsList[index];
+
+                        let talkUser = new Talk.User({
+                            id: contactData.id,
+                            name: contactData.name,
+                            photoUrl: contactData.photoUrl || 'default-profile.png' // Use the profile picture URL or a default
+                        });
+
+                        let conversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(me, talkUser));
+                        conversation.setParticipant(me);
+                        conversation.setParticipant(talkUser);
+
+                        chatbox.select(conversation);
+                    });
+                });
+            });
+        }
+
+        // Fetch and display contacts when the DOM is loaded
+        document.addEventListener("DOMContentLoaded", () => {
+            onAuthStateChanged(auth, (user) => {
+                if (user) {
+                    fetchAndDisplayContacts();
+                } else {
+                    console.error("User is not logged in.");
+                }
             });
         });
-    });
-}   
-        document.addEventListener("DOMContentLoaded", fetchAndDisplayContacts);
     </script>
 </head>
 <body>
