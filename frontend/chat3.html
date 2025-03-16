@@ -8,13 +8,6 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <title>Your conversations</title>
-
-    <!-- Firebase v9+ SDK (using modular imports) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-    </script>
 </head>
 <body>
     <!-- minified snippet to load TalkJS without delaying your page -->
@@ -23,26 +16,22 @@
     s=a.createElement('script');s.async=1;s.src="https://cdn.talkjs.com/talk.js";a.head.appendChild(s)
     ;k=t.Promise;t.Talk={v:3,ready:{then:function(f){if(k)return new k(function(r,e){l.push([f,r,e])});l
     .push([f])},catch:function(){return k&&new k()},c:l}};})(window,document,[]);
-
     </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
-        *{
-            font-family:"Delius";
-        }
+
         #contacts-list {
             margin-top: auto;
             width: 700px;
-            border: #54463A solid 1px;
+            border: #d0d8dc solid 1px;
             border-radius: 6px;
             height: 510px;
-            color: #54463A;
-            font-family:"Delius";
+            color: #111;
+            font-family: 'Open Sans', sans-serif;
         }
 
         #contacts-list h2 {
-            color: #54463A;
-            background: #FDFBD4;
+            color: #111;
+            background: #e7ecee;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
             font-size: 13.3px;
@@ -63,7 +52,7 @@
         }
 
         .contact-container:hover {
-            background-color: #FDFBD4;;
+            background-color: #e7ecee;
         }
 
         .contact-name {
@@ -80,12 +69,12 @@
             margin-left: 20px;
             margin-right: 20px;
         }
-    </style>
 
+    </style>
     <div style="display: flex; justify-content: center;">
         <!-- container element in which TalkJS will display a chat UI -->
         <div id="talkjs-container" style="width: 30%;">
-            <i>Loading chat...</i>
+        <i>Loading chat...</i>
         </div>
 
         <div id="contacts-list" style="width: 400px;">
@@ -93,30 +82,32 @@
         </div>
 
     </div>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js"></script>
 
-    <script type="module">
-        // Initialize Firebase
-        const firebaseConfig = {
-            apiKey: "AIzaSyAu2lp1BsnqTdc3FK9gATIMWevtkttGK68",
-            authDomain: "coffeebud-d0960.firebaseapp.com",
-            projectId: "coffeebud-d0960",
-            storageBucket: "coffeebud-d0960.firebasestorage.app",
-            messagingSenderId: "1061672167679",
-            appId: "1:1061672167679:web:f39ecd079d344f6f0484ca",
-            measurementId: "G-G7LZYRSW5G"
-        };
+<script>
+    // Initialize Firebase
+    const firebaseConfig = {
+    apiKey: "AIzaSyAu2lp1BsnqTdc3FK9gATIMWevtkttGK68",
+    authDomain: "coffeebud-d0960.firebaseapp.com",
+    projectId: "coffeebud-d0960",
+    storageBucket: "coffeebud-d0960.firebasestorage.app",
+    messagingSenderId: "1061672167679",
+    appId: "1:1061672167679:web:f39ecd079d344f6f0484ca",
+    measurementId: "G-G7LZYRSW5G"
+};
+    firebase.initializeApp(firebaseConfig);
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+    // Reference to your Firebase Realtime Database
+    const database = firebase.database();
+    const contactsRef = database.ref('contacts'); // Assuming 'contacts' is the node where your contacts are stored
 
-        // Function to fetch and display contacts
-        async function fetchAndDisplayContacts() {
+    // Function to fetch and display contacts
+    function fetchAndDisplayContacts() {
+        contactsRef.once('value').then((snapshot) => {
             const contactsList = [];
-            const querySnapshot = await getDocs(collection(db, "users"));
-            querySnapshot.forEach((doc) => {
-                const contact = doc.data();
+            snapshot.forEach((childSnapshot) => {
+                const contact = childSnapshot.val();
                 contactsList.push({
                     id: contact.email, // Use email as the ID
                     name: contact.firstName, // Use firstName as the name
@@ -158,53 +149,55 @@
 
             // Initialize TalkJS after fetching contacts
             initializeTalkJS(contactsList);
-        }
+        }).catch((error) => {
+            console.error('Error fetching contacts:', error);
+        });
+    }
 
-        // Function to initialize TalkJS
-        function initializeTalkJS(contactsList) {
-            Talk.ready.then(function () {
-                // Create user "me"
-                let me = new Talk.User({
-                    id: '0',
-                    name: 'Josh',
-                    photoUrl: 'images/josh.webp'
-                });
+    // Function to initialize TalkJS
+    function initializeTalkJS(contactsList) {
+        Talk.ready.then(function () {
+            // Create user "me"
+            let me = new Talk.User({
+                id: '0',
+                name: 'Josh',
+                photoUrl: 'images/josh.webp'
+            });
 
-                // Start TalkJS Session
-                window.talkSession = new Talk.Session({
-                    appId: 'tQWG4Gnl',
-                    me: me
-                });
+            // Start TalkJS Session
+            window.talkSession = new Talk.Session({
+                appId: 'tQWG4Gnl',
+                me: me
+            });
 
-                // Create and mount the chatbox
-                const chatbox = talkSession.createChatbox();
-                chatbox.select(null);
-                chatbox.mount(document.getElementById('talkjs-container'));
+            // Create and mount the chatbox
+            const chatbox = talkSession.createChatbox();
+            chatbox.select(null);
+            chatbox.mount(document.getElementById('talkjs-container'));
 
-                // Create conversationBuilder objects for each user
-                const conversations = contactsList.map((user) => {
-                    const talkUser = new Talk.User(user);
+            // Create conversationBuilder objects for each user
+            const conversations = contactsList.map((user) => {
+                const talkUser = new Talk.User(user);
 
-                    const conversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(me, talkUser));
-                    conversation.setParticipant(me);
-                    conversation.setParticipant(talkUser);
+                const conversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(me, talkUser));
+                conversation.setParticipant(me);
+                conversation.setParticipant(talkUser);
 
-                    return conversation;
-                });
+                return conversation;
+            });
 
-                // Listen for clicks on each contact and select the appropriate conversation
-                const contactsListDivs = document.getElementsByClassName('contact-container');
-                conversations.forEach((conversation, index) => {
-                    contactsListDivs[index].addEventListener('click', () => {
-                        chatbox.select(conversation);
-                    });
+            // Listen for clicks on each contact and select the appropriate conversation
+            const contactsListDivs = document.getElementsByClassName('contact-container');
+            conversations.forEach((conversation, index) => {
+                contactsListDivs[index].addEventListener('click', () => {
+                    chatbox.select(conversation);
                 });
             });
-        }
+        });
+    }
 
-        // Fetch and display contacts when the page loads
-        fetchAndDisplayContacts();
-
-    </script>
+    // Fetch and display contacts when the page loads
+    fetchAndDisplayContacts();
+</script>
 </body>
 </html>
