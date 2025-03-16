@@ -65,9 +65,6 @@ body {
     cursor: pointer;
     user-select: none;
     transition: transform 0.5s;
-    display: flex;
-    flex-direction: column; /* Add flex column for vertical stacking */
-    align-items: center; /* Center items horizontally */
 }
 
 #like,
@@ -212,20 +209,20 @@ button:hover {
 }
 
 .card__image {
-  width: 200px; /* Sau orice lățime dorită */
-  height: 200px; /* Sau orice înălțime dorită */
+  width: 250px;
+  height: 250px;
   overflow: hidden;
   margin: 20px auto;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
 }
 
 .card__image img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Umple containerul, decupând dacă este necesar */
-  object-position: center; /* Centrează conținutul imaginii */
+  object-fit: cover;
+  object-position: center;
 }
 
 .card button{
