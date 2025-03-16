@@ -35,7 +35,7 @@ function appendNewCard() {
         message.innerText = "Mergi la plimbare!";
         message.style.color = "black";
         message.style.marginTop = "20px";
-        message.style.fontFamily = "Lucida Console, monospace";
+        message.style.fontFamily = 'Delius';
 
         swiper.appendChild(message);
       return;
