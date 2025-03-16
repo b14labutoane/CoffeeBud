@@ -1,13 +1,11 @@
 class Card {
   constructor({
     imageUrl,
-    description,
     onDismiss,
     onLike,
     onDislike
   }) {
     this.imageUrl = imageUrl;
-    this.description = description;
     this.onDismiss = onDismiss;
     this.onLike = onLike;
     this.onDislike = onDislike;
@@ -18,7 +16,7 @@ class Card {
   #startPoint;
   #offsetX;
   #offsetY;
-  
+
   #isTouchDevice = () => {
     return (('ontouchstart' in window) ||
       (navigator.maxTouchPoints > 0) ||
@@ -32,14 +30,10 @@ class Card {
     const img = document.createElement('img');
     img.src = this.imageUrl;
     card.append(img);
-
-    // Create button to view description
     const btn = document.createElement('button');
     btn.textContent = 'View Info';
-    btn.classList.add('info-button');
-    btn.onclick = () => this.openModal(this.description);  // Pass the description
+    btn.onclick = () => this.openModal();
     card.appendChild(btn);
-
     this.element = card;
 
     if (this.#isTouchDevice()) {
@@ -51,11 +45,9 @@ class Card {
     this.#disableSelectOnDoubleClick();
   }
 
-  // Open modal and display correct description
-  openModal(description) {
-    if (!description) return; // Prevents errors if description is missing
+  openModal() {
     modalTitle.innerText = `Image Info`;
-    modalDescription.innerText = description;
+    modalDescription.innerText = this.description;
     modal.style.display = 'flex'; // Show modal
     overlay.style.display = 'block'; // Show overlay
   }
@@ -66,7 +58,6 @@ class Card {
       this.onDismiss();
     }
   }
-
   #listenToTouchEvents = () => {
     this.element.addEventListener('touchstart', (e) => {
       const touch = e.changedTouches[0];
@@ -83,6 +74,7 @@ class Card {
 
   #listenToMouseEvents = () => {
     this.element.addEventListener('mousedown', (e) => {
+      console.log("Mouse down detected!");
       const { clientX, clientY } = e;
       this.#startPoint = { x: clientX, y: clientY }
       document.addEventListener('mousemove', this.#handleMouseMove);
@@ -91,6 +83,7 @@ class Card {
 
     document.addEventListener('mouseup', this.#handleMoveUp);
 
+    //sa nu se dea drag la card
     this.element.addEventListener('dragstart', (e) => {
       e.preventDefault();
     });
@@ -101,12 +94,13 @@ class Card {
     this.#offsetY = y - this.#startPoint.y;
     const rotate = this.#offsetX * 0.1;
     this.element.style.transform = `translate(${this.#offsetX}px, ${this.#offsetY}px) rotate(${rotate}deg)`;
-
+    // dismiss card
     if (Math.abs(this.#offsetX) > this.element.clientWidth * 0.7) {
       this.#dismiss(this.#offsetX > 0 ? 1 : -1);
     }
   }
 
+  // mouse event handlers
   #handleMouseMove = (e) => {
     e.preventDefault();
     if (!this.#startPoint) return;
@@ -123,6 +117,7 @@ class Card {
     this.element.style.transform = 'translate(0px, 0px)';
   }
 
+  // touch event handlers
   #handleTouchMove = (e) => {
     if (!this.#startPoint) return;
     const touch = e.changedTouches[0];
@@ -159,11 +154,10 @@ class Card {
       this.onDislike();
     }
   }
-
   #disableSelectOnDoubleClick = () => {
     this.element.addEventListener('dblclick', (e) => {
-      e.preventDefault();
-      this.element.style.userSelect = 'none';
+      e.preventDefault(); 
+      this.element.style.userSelect = 'none'; 
       this.element.style.pointerEvents = 'auto';
     });
   };
