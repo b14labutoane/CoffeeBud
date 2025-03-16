@@ -39,12 +39,17 @@ body {
     margin: 50px auto;
     border-radius: 10px;
     box-shadow: 0 20px 35px rgba(0, 0, 1, 0.2);
-    
+    justify-content: center; 
+    align-items: center;
+    text-align: justify;
 }
 
 /* Add Space Below Sign-in Component */
 .container {
     margin-bottom: 40px; /* Ensures spacing */
+    justify-content: center; 
+    align-items: center;
+    text-align: justify;
 }
 
 /* Form Styling */
@@ -198,3 +203,10 @@ button:hover {
     opacity: 0;
     animation: fadeOut 7s forwards;
 }
+
+.justify-text {
+    text-align: justify;
+    text-justify: inter-word; 
+    text-indent: 30px;
+    line-height: 1.6; 
+  }
