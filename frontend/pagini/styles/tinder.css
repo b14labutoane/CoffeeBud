@@ -67,6 +67,13 @@ body {
     transition: transform 0.5s;
 }
 
+.card img {
+    width: 100%; 
+    height: auto; 
+    object-fit: contain; 
+    border-radius: 10px; 
+}
+
 #like,
 #dislike {
     font-size: 16vh;
