@@ -9,6 +9,95 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/frontend/pagini/styles/navbar.css">
     <title>Your conversations</title>
+    <!-- Firebase v9+ SDK (using modular imports) -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyAu2lp1BsnqTdc3FK9gATIMWevtkttGK68",
+            authDomain: "coffeebud-d0960.firebaseapp.com",
+            projectId: "coffeebud-d0960",
+            storageBucket: "coffeebud-d0960.appspot.com",  // Fixed storage bucket URL
+            messagingSenderId: "1061672167679",
+            appId: "1:1061672167679:web:f39ecd079d344f6f0484ca",
+            measurementId: "G-G7LZYRSW5G"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // Function to fetch and display contacts
+        async function fetchAndDisplayContacts() {
+            const contactsList = [];
+            const querySnapshot = await getDocs(collection(db, "users"));
+            querySnapshot.forEach((doc) => {
+                const contact = doc.data();
+                contactsList.push({
+                    id: contact.email,
+                    name: contact.firstName,
+                    photoUrl: contact.profilePicURL
+                });
+            });
+
+            // Display contacts list
+            const contactsWrapper = document.getElementById('contacts-list');
+            contactsWrapper.innerHTML = ''; // Clear previous content
+
+            contactsList.forEach((contact) => {
+                const contactContainerDiv = document.createElement('div');
+                contactContainerDiv.classList.add('contact-container');
+
+                const contactPhoto = document.createElement('img');
+                contactPhoto.src = contact.photoUrl;
+                contactPhoto.alt = contact.name;
+
+                const usernameDiv = document.createElement('div');
+                usernameDiv.classList.add('contact-name');
+                usernameDiv.innerText = contact.name;
+
+                contactContainerDiv.appendChild(contactPhoto);
+                contactContainerDiv.appendChild(usernameDiv);
+                contactsWrapper.appendChild(contactContainerDiv);
+            });
+
+            initializeTalkJS(contactsList);
+        }
+
+        // Function to initialize TalkJS
+        function initializeTalkJS(contactsList) {
+            Talk.ready.then(() => {
+                let me = new Talk.User({
+                    id: '0',
+                    name: 'Josh',
+                    photoUrl: 'images/josh.webp'
+                });
+
+                window.talkSession = new Talk.Session({
+                    appId: 'tQWG4Gnl',
+                    me: me
+                });
+
+                const chatbox = talkSession.createChatbox();
+                chatbox.select(null);
+                chatbox.mount(document.getElementById('talkjs-container'));
+
+                contactsList.forEach((user) => {
+                    const talkUser = new Talk.User(user);
+                    const conversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(me, talkUser));
+                    conversation.setParticipant(me);
+                    conversation.setParticipant(talkUser);
+                });
+            });
+        }
+
+        // Run when page loads
+        document.addEventListener("DOMContentLoaded", fetchAndDisplayContacts);
+    </script>
 </head>
 <body>
     <nav>
@@ -19,12 +108,16 @@
           <a class="active" href="/frontend/chat.html">Chat with buds</a> <!--trebuie modificat cand avem final version de chat-->
         </div>
     </nav>
-    <!-- minified snippet to load TalkJS without delaying your page -->
+    <!-- TalkJS Minified Snippet -->
     <script>
-    (function(t,a,l,k,j,s){
-    s=a.createElement('script');s.async=1;s.src="https://cdn.talkjs.com/talk.js";a.head.appendChild(s)
-    ;k=t.Promise;t.Talk={v:3,ready:{then:function(f){if(k)return new k(function(r,e){l.push([f,r,e])});l
-    .push([f])},catch:function(){return k&&new k()},c:l}};})(window,document,[]);
+        (function(t,a,l,k,j,s){
+            s=a.createElement('script');s.async=1;s.src="https://cdn.talkjs.com/talk.js";
+            a.head.appendChild(s);
+            k=t.Promise;
+            t.Talk={v:3,ready:{then:function(f){
+                if(k) return new k(function(r,e){l.push([f,r,e])});
+                l.push([f])},catch:function(){return k&&new k()},c:l}};
+        })(window,document,[]);
     </script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
@@ -85,16 +178,17 @@
         }
     </style>
     <div style="display: flex; justify-content: center;">
-        <!-- container element in which TalkJS will display a chat UI -->
+        <!-- Chat UI -->
         <div id="talkjs-container" style="width: 30%;">
-        <i>Loading chat...</i>
+            <i>Loading chat...</i>
         </div>
 
+        <!-- Contacts List -->
         <div id="contacts-list" style="width: 400px;">
             <h2>Contacts</h2>
         </div>
-
     </div>
+    
     <script>
         const contactsList = [
     
@@ -205,6 +299,101 @@
             });
         });
         });
+    </script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
+        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
+        import { getAuth } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
+    
+        const firebaseConfig = {
+            apiKey: "AIzaSyAu2lp1BsnqTdc3FK9gATIMWevtkttGK68",
+            authDomain: "coffeebud-d0960.firebaseapp.com",
+            projectId: "coffeebud-d0960",
+            storageBucket: "coffeebud-d0960.appspot.com",
+            messagingSenderId: "1061672167679",
+            appId: "1:1061672167679:web:f39ecd079d344f6f0484ca",
+            measurementId: "G-G7LZYRSW5G"
+        };
+    
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+    
+        async function fetchAndDisplayContacts() {
+            const contactsList = [];
+            const querySnapshot = await getDocs(collection(db, "users"));
+            querySnapshot.forEach((doc) => {
+                const contact = doc.data();
+                contactsList.push({
+                    id: contact.email,
+                    name: contact.firstName,
+                    photoUrl: contact.profilePicURL
+                });
+            });
+    
+            const contactsWrapper = document.getElementById('contacts-list');
+            contactsWrapper.innerHTML = '';
+    
+            contactsList.forEach((contact) => {
+                const contactContainerDiv = document.createElement('div');
+                contactContainerDiv.classList.add('contact-container');
+                contactContainerDiv.dataset.id = contact.id;
+    
+                const contactPhoto = document.createElement('img');
+                contactPhoto.src = contact.photoUrl;
+                contactPhoto.alt = contact.name;
+    
+                const usernameDiv = document.createElement('div');
+                usernameDiv.classList.add('contact-name');
+                usernameDiv.innerText = contact.name;
+    
+                contactContainerDiv.appendChild(contactPhoto);
+                contactContainerDiv.appendChild(usernameDiv);
+                contactsWrapper.appendChild(contactContainerDiv);
+            });
+    
+            initializeTalkJS(contactsList);
+        }
+    
+        function initializeTalkJS(contactsList) {
+            Talk.ready.then(() => {
+                let me = new Talk.User({
+                    id: '0',
+                    name: 'Josh',
+                    photoUrl: 'images/josh.webp'
+                });
+    
+                window.talkSession = new Talk.Session({
+                    appId: 'tQWG4Gnl',
+                    me: me
+                });
+    
+                const chatbox = talkSession.createChatbox();
+                chatbox.mount(document.getElementById('talkjs-container'));
+    
+                const contactsDivs = document.getElementsByClassName('contact-container');
+                
+                Array.from(contactsDivs).forEach((contactDiv, index) => {
+                    contactDiv.addEventListener('click', () => {
+                        const contactData = contactsList[index];
+    
+                        let talkUser = new Talk.User({
+                            id: contactData.id,
+                            name: contactData.name,
+                            photoUrl: contactData.photoUrl
+                        });
+    
+                        let conversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(me, talkUser));
+                        conversation.setParticipant(me);
+                        conversation.setParticipant(talkUser);
+    
+                        chatbox.select(conversation);
+                    });
+                });
+            });
+        }
+    
+        document.addEventListener("DOMContentLoaded", fetchAndDisplayContacts);
     </script>
 </body>
 </html>
