@@ -72,6 +72,7 @@ body {
     height: auto; 
     object-fit: contain; 
     border-radius: 10px; 
+    
 }
 
 #like,
@@ -158,6 +159,7 @@ button:hover {
     background-color: rgba(0, 0, 0, 0.5);
     justify-content: center;
     align-items: center;
+    z-index: 1000;
 }
 
 .modal-content {
@@ -166,11 +168,17 @@ button:hover {
     border-radius: 5px;
     width: 80%;
     max-width: 500px;
-    text-align: center;
+    text-align: center; 
+    overflow: hidden;
 }
 
 .modal-content h2 {
     margin-bottom: 20px;
+}
+
+.blur-background *:not(.modal):not(.modal *) {
+    filter: blur(5px);
+    pointer-events: none;
 }
 
 .close-btn {
