@@ -53,7 +53,7 @@ function populateCards() {
 function appendNewCard() {
     if (cardCount >= usersData.length) {
         const message = document.createElement('h2');
-        message.innerText = "Mergi la plimbare!";
+        message.innerText = "You have ran out of matches!";
         message.style.color = "black";
         message.style.marginTop = "20px";
         message.style.fontFamily = 'Delius';
@@ -73,7 +73,10 @@ function appendNewCard() {
         onDislike: () => {
             dislike.style.animationPlayState = 'running';
             dislike.classList.toggle('trigger');
-        }
+        },
+        modalTitle: document.querySelector("#modal-title"), 
+        modalDescription: document.querySelector("#modal-description"), 
+        modal: document.querySelector("#modal")
     });
 
     swiper.append(card.element);
@@ -90,8 +93,8 @@ function closeModal() {
     overlay.style.display = 'none';
 }
 
-overlay.addEventListener('click', closeModal);
-closeModalButtons.forEach(button => {
+  overlay.addEventListener('click', closeModal);
+  closeModalButtons.forEach(button => {
     button.addEventListener('click', closeModal);
 });
 
