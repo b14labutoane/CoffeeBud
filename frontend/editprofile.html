@@ -127,7 +127,7 @@
                 const user = auth.currentUser;
                 if (user) {
                     await updateDoc(doc(db, 'users', user.uid), {
-                        profilePicURL: imageURL
+                        profilePicURL: imageURL,
                     });
                 }
             }
