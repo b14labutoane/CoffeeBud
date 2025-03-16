@@ -9,40 +9,25 @@
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
     <title>Your conversations</title>
 
-    <!-- Firebase v9+ SDK (using modular imports) -->
-    <script type="module">
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js";
-        import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-firestore.js";
-        import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.11.1/firebase-auth.js";
-    </script>
-</head>
-<body>
-    <!-- minified snippet to load TalkJS without delaying your page -->
-    <script>
-    (function(t,a,l,k,j,s){
-    s=a.createElement('script');s.async=1;s.src="https://cdn.talkjs.com/talk.js";a.head.appendChild(s)
-    ;k=t.Promise;t.Talk={v:3,ready:{then:function(f){if(k)return new k(function(r,e){l.push([f,r,e])});l
-    .push([f])},catch:function(){return k&&new k()},c:l}};})(window,document,[]);
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-storage.js"></script>
 
-    </script>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Delius&display=swap');
-        *{
-            font-family:"Delius";
-        }
         #contacts-list {
             margin-top: auto;
             width: 700px;
-            border: #54463A solid 1px;
+            border: #d0d8dc solid 1px;
             border-radius: 6px;
             height: 510px;
-            color: #54463A;
-            font-family:"Delius";
+            color: #111;
+            font-family: 'Open Sans', sans-serif;
         }
 
         #contacts-list h2 {
-            color: #54463A;
-            background: #FDFBD4;
+            color: #111;
+            background: #e7ecee;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
             font-size: 13.3px;
@@ -53,7 +38,7 @@
             text-align: left;
             height: 40px;
         }
-        
+
         .contact-container {
             height: 50px;
             display: flex;
@@ -63,7 +48,7 @@
         }
 
         .contact-container:hover {
-            background-color: #FDFBD4;;
+            background-color: #e7ecee;
         }
 
         .contact-name {
@@ -81,6 +66,15 @@
             margin-right: 20px;
         }
     </style>
+</head>
+<body>
+    <!-- minified snippet to load TalkJS without delaying your page -->
+    <script>
+        (function(t,a,l,k,j,s){
+            s=a.createElement('script');s.async=1;s.src="https://cdn.talkjs.com/talk.js";a.head.appendChild(s);
+            k=t.Promise;t.Talk={v:3,ready:{then:function(f){if(k)return new k(function(r,e){l.push([f,r,e])});l
+            .push([f])},catch:function(){return k&&new k()},c:l}};})(window,document,[]);
+    </script>
 
     <div style="display: flex; justify-content: center;">
         <!-- container element in which TalkJS will display a chat UI -->
@@ -91,10 +85,9 @@
         <div id="contacts-list" style="width: 400px;">
             <h2>Contacts</h2>
         </div>
-
     </div>
 
-    <script type="module">
+    <script>
         // Initialize Firebase
         const firebaseConfig = {
             apiKey: "AIzaSyAu2lp1BsnqTdc3FK9gATIMWevtkttGK68",
@@ -106,61 +99,63 @@
             measurementId: "G-G7LZYRSW5G"
         };
 
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-        const auth = getAuth(app);
+        // Initialize Firebase app and Firestore
+        const app = firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
 
-        // Function to fetch and display contacts
-        async function fetchAndDisplayContacts() {
-            const contactsList = [];
-            const querySnapshot = await getDocs(collection(db, "users"));
-            querySnapshot.forEach((doc) => {
-                const contact = doc.data();
-                contactsList.push({
-                    id: contact.email, // Use email as the ID
-                    name: contact.firstName, // Use firstName as the name
-                    photoUrl: contact.profilePicURL // Use profilePicURL as the photo URL
+        // Fetch contacts from Firestore
+        function fetchAndDisplayContacts() {
+            db.collection('users').get().then((querySnapshot) => {
+                const contactsList = [];
+                querySnapshot.forEach((doc) => {
+                    const contact = doc.data();
+                    contactsList.push({
+                        id: contact.email, // Use email as the ID
+                        name: contact.firstName, // Use firstName as the name
+                        photoUrl: contact.profilePicURL // Use profilePicURL as the photo URL
+                    });
                 });
+
+                // Display contacts list on page
+                const contactsWrapper = document.getElementById('contacts-list');
+                contactsWrapper.innerHTML = ''; // Clear existing content
+
+                // Loop through the fetched contacts and display them
+                for (let contact of contactsList) {
+                    const id = contact.id;
+                    const username = contact.name;
+                    const photoUrl = contact.photoUrl;
+
+                    // Create img tag for contact photo
+                    const contactPhoto = document.createElement('img');
+                    contactPhoto.classList.add('contact-photo');
+                    contactPhoto.src = photoUrl;
+
+                    // Create div for contact name
+                    const usernameDiv = document.createElement('div');
+                    usernameDiv.classList.add('contact-name');
+                    usernameDiv.innerText = username;
+
+                    // Create parent div for the contact
+                    const contactContainerDiv = document.createElement('div');
+                    contactContainerDiv.classList.add('contact-container');
+
+                    // Append photo and name to the parent div
+                    contactContainerDiv.appendChild(contactPhoto);
+                    contactContainerDiv.appendChild(usernameDiv);
+
+                    // Append the contact to the contacts wrapper
+                    contactsWrapper.appendChild(contactContainerDiv);
+                }
+
+                // Initialize TalkJS after fetching contacts
+                initializeTalkJS(contactsList);
+            }).catch((error) => {
+                console.error('Error fetching contacts:', error);
             });
-
-            // Display contacts list on page
-            const contactsWrapper = document.getElementById('contacts-list');
-            contactsWrapper.innerHTML = ''; // Clear existing content
-
-            // Loop through the fetched contacts and display them
-            for (let contact of contactsList) {
-                const id = contact.id;
-                const username = contact.name;
-                const photoUrl = contact.photoUrl;
-
-                // Create img tag for contact photo
-                const contactPhoto = document.createElement('img');
-                contactPhoto.classList.add('contact-photo');
-                contactPhoto.src = photoUrl;
-
-                // Create div for contact name
-                const usernameDiv = document.createElement('div');
-                usernameDiv.classList.add('contact-name');
-                usernameDiv.innerText = username;
-
-                // Create parent div for the contact
-                const contactContainerDiv = document.createElement('div');
-                contactContainerDiv.classList.add('contact-container');
-
-                // Append photo and name to the parent div
-                contactContainerDiv.appendChild(contactPhoto);
-                contactContainerDiv.appendChild(usernameDiv);
-
-                // Append the contact to the contacts wrapper
-                contactsWrapper.appendChild(contactContainerDiv);
-            }
-
-            // Initialize TalkJS after fetching contacts
-            initializeTalkJS(contactsList);
         }
 
-        // Function to initialize TalkJS
+        // Initialize TalkJS
         function initializeTalkJS(contactsList) {
             Talk.ready.then(function () {
                 // Create user "me"
@@ -204,7 +199,6 @@
 
         // Fetch and display contacts when the page loads
         fetchAndDisplayContacts();
-
     </script>
 </body>
 </html>

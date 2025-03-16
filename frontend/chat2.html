@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&display=swap" rel="stylesheet">
+    <title>Your conversations</title>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.8.0/firebase-database.js"></script>
+</head>
+<body>
+    <script>
+        // Firebase configuration
+        const firebaseConfig = {
+    apiKey: "AIzaSyAu2lp1BsnqTdc3FK9gATIMWevtkttGK68",
+    authDomain: "coffeebud-d0960.firebaseapp.com",
+    projectId: "coffeebud-d0960",
+    storageBucket: "coffeebud-d0960.firebasestorage.app",
+    messagingSenderId: "1061672167679",
+    appId: "1:1061672167679:web:f39ecd079d344f6f0484ca",
+    measurementId: "G-G7LZYRSW5G"
+};
+
+        const app = firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+
+        const contactsList = [];  // We will populate this array from Firebase
+
+        // Fetch contacts from Firebase
+        function fetchContacts() {
+            const contactsRef = database.ref('user'); // Path to contacts data in Firebase
+
+            contactsRef.once('value', (snapshot) => {
+                snapshot.forEach((childSnapshot) => {
+                    const contact = childSnapshot.val();
+                    if (contact.email !== "teocrai2005@gmail.com") {  // Assuming we don't want to show the current user in their own contact list
+                        contactsList.push({
+                            id: contact.email,  // Treat email as the contact ID
+                            name: contact.firstName + " " + contact.lastName, // Combine first and last names
+                            photoUrl: contact.profilePicURL, // URL for the profile picture
+                        });
+                    }
+                });
+
+                // After fetching the contacts, display them
+                displayContacts();
+            });
+        }
+
+        // Display contacts in the UI
+        function displayContacts() {
+            const contactsWrapper = document.getElementById('contacts-list');
+            
+            // Clear any previous content
+            contactsWrapper.innerHTML = '<h2>Contacts</h2>';
+
+            // Loop through the contacts array and display them
+            for (let contact of contactsList) {
+                const id = contact.id;
+                const username = contact.name;
+                const photoUrl = contact.photoUrl;
+
+                const contactPhoto = document.createElement('img');
+                contactPhoto.classList.add('contact-photo');
+                contactPhoto.src = photoUrl;
+
+                const usernameDiv = document.createElement('div');
+                usernameDiv.classList.add('contact-name');
+                usernameDiv.innerText = username;
+
+                const contactContainerDiv = document.createElement('div');
+                contactContainerDiv.classList.add('contact-container');
+
+                contactContainerDiv.appendChild(contactPhoto);
+                contactContainerDiv.appendChild(usernameDiv);
+
+                contactsWrapper.appendChild(contactContainerDiv);
+            }
+
+            // Set up conversations after contacts are loaded
+            setupConversations();
+        }
+
+        // Set up conversations with loaded contacts
+        function setupConversations() {
+            Talk.ready.then(function() {
+                let me = new Talk.User({
+                    id: 'teocrai2005@gmail.com', // Use the current user's email as the ID
+                    name: 'Josh',
+                    photoUrl: 'images/josh.webp'
+                });
+
+                window.talkSession = new Talk.Session({
+                    appId: 'tQWG4Gnl',
+                    me: me
+                });
+
+                const chatbox = talkSession.createChatbox();
+                chatbox.select(null);
+                chatbox.mount(document.getElementById('talkjs-container'));
+
+                const conversations = contactsList.map(function(user) {
+                    const talkUser = new Talk.User(user);
+                    const conversation = talkSession.getOrCreateConversation(Talk.oneOnOneId(me, talkUser));
+                    conversation.setParticipant(me);
+                    conversation.setParticipant(talkUser);
+                    return conversation;
+                });
+
+                let contactsListDivs = document.getElementsByClassName('contact-container');
+
+                conversations.forEach(function(conversation, index) {
+                    contactsListDivs[index].addEventListener('click', () => {
+                        chatbox.select(conversation);
+                    });
+                });
+            });
+        }
+
+        // Fetch contacts when the page loads
+        window.onload = fetchContacts;
+    </script>
+
+    <div style="display: flex; justify-content: center;">
+        <!-- container element in which TalkJS will display a chat UI -->
+        <div id="talkjs-container" style="width: 30%;">
+            <i>Loading chat...</i>
+        </div>
+
+        <div id="contacts-list" style="width: 400px;">
+            <h2>Contacts</h2>
+        </div>
+    </div>
+
+    <style>
+        #contacts-list {
+            margin-top: auto;
+            width: 700px;
+            border: #d0d8dc solid 1px;
+            border-radius: 6px;
+            height: 510px;
+            color: #111;
+            font-family: 'Open Sans', sans-serif;
+        }
+
+        #contacts-list h2 {
+            color: #111;
+            background: #e7ecee;
+            border-top-left-radius: 5px;
+            border-top-right-radius: 5px;
+            font-size: 13.3px;
+            font-weight: 700;
+            margin: 0;
+            padding-top: 20px;
+            padding-left: 20px;
+            text-align: left;
+            height: 40px;
+        }
+        
+        .contact-container {
+            height: 50px;
+            display: flex;
+            margin: 5px 0;
+            padding: 5px 0;
+            cursor: pointer;
+        }
+
+        .contact-container:hover {
+            background-color: #e7ecee;
+        }
+
+        .contact-name {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+        }
+
+        img {
+            height: 40px;
+            width: 40px;
+            border: #fff 2px solid;
+            border-radius: 200px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+    </style>
+</body>
+</html>
