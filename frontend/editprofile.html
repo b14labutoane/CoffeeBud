@@ -35,9 +35,12 @@
 
                 <!-- Image Upload Section -->
                 <div id="imageUploader" class="upload-section" style="display: none;">
-                    <h2 class="ghost-round full-width">Upload Profile Picture</h2>
+                    <h2>Upload Profile Picture</h2>
                     <div class="file-upload-container">
-                        <input type="file" id="fileInput" accept="image/*">
+                        <label for="fileInput" class="ghost-round full-width">
+                            File Input
+                        </label>
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;">
                         <button id="uploadImage" class="ghost-round full-width">Upload Image</button>
                     </div>
                 </div>
