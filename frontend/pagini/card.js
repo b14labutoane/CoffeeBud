@@ -82,7 +82,7 @@ class Card {
       document.selection.empty();
     }
 
-    this.modalTitle.innerText = `Image Info`;
+    this.modalTitle.innerText = `About`;
     this.modalDescription.innerText = this.description;
     this.modal.style.display = 'flex'; 
     overlay.style.display = 'block'; 
